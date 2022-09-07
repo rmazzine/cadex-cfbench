@@ -208,7 +208,7 @@ class Cadex:
         return self.input_modifier.transform(input)
 
     def reset(self):
-        K.set_value(self.input_modifier.weights[0], np.zeros(K.get_variable_shape(self.input_modifier.weights[0])))
+        K.set_value(self.input_modifier.weights[0], np.zeros(self.input_modifier.weights[0].get_shape()))
 
 class InputAddLayer(Layer):
     '''
