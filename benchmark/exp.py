@@ -68,9 +68,6 @@ for benchmark_data in benchmark_generator:
 
         cat_idx = list(cat_idx.values())
 
-        # Remove binary features since when they raise an error when selected
-        cat_idx = [c for c in cat_idx if len(c) > 1]
-
         explainer = Cadex(model, categorical_attributes=cat_idx if cat_feats else None)
 
         cadex_current_dataset = benchmark_data['dsname']
@@ -90,6 +87,11 @@ for benchmark_data in benchmark_generator:
                 cf = cf_gen[0].iloc[0].to_list()
             else:
                 cf = cf_gen[0][0].tolist()
+
+            if factual_array != cf:
+                print('CF candidate generated')
+            else:
+                print('No CF generated')
 
         except Exception as e:
             print('Error generating CF')
@@ -112,6 +114,6 @@ for benchmark_data in benchmark_generator:
         # If CF generation time exceeded the limit
         evaluator(
             cf_out=factual_row.to_list(),
-            algorithm_name='dice',
+            algorithm_name='cadex',
             cf_generation_time=np.NaN,
             save_results=True)
